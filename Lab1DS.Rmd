@@ -1,0 +1,171 @@
+---
+title: "Lab1DS"
+output: html_document
+---
+
+```{r}
+library(rela)
+library(psych)
+library(FactoMineR)
+library(fpc)
+library(factoextra)
+library(caret)
+library(corrplot)
+
+
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, include=FALSE}
+datosTrain <- read.csv(file = 'train.csv')
+library(ggplot2)
+library(ggpubr)
+theme_set(theme_pubr())
+```
+
+# Laboratorio No.1 Data Science
+## Analisis exploratorio del data set
+
+Nota:El analiis exploratorio se saca de un laboratorio del semestre pasado de mineria de datos, el cual se trabajo con Maria Isabel Montoya que es de otro grupo este semestre.
+
+
+Breve resumen del data set
+Mas explicaciones en el PDF
+```{r echo=FALSE}
+print("Dimensiones")
+dim(datosTrain)
+print("Resumen")
+summary(datosTrain)
+
+```
+
+
+Aqui podrá encontrar barras de frecuencia para todas las  variables chr en la base de datos train
+
+```{r BloqueDeFrecuencia, echo=FALSE}
+ggplot(datosTrain, aes(MSZoning))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Street))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Alley))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(LotShape))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(LandContour))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Utilities))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(LotConfig))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(LandSlope))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Neighborhood))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Condition1))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Condition2))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(BldgType))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(HouseStyle))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(RoofStyle))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(YearBuilt))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(YearRemodAdd))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(RoofMatl))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Exterior1st))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Exterior2nd))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(ExterQual))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(ExterCond))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Foundation))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(BsmtQual))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(BsmtCond))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(BsmtExposure))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(BsmtFinType1))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(BsmtFinSF1))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(BsmtFinType2))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Heating))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(HeatingQC))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(CentralAir))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Electrical))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(KitchenQual))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Functional))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(FireplaceQu))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(GarageType))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(GarageFinish))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(GarageQual))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(GarageCond))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(PavedDrive))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(PoolQC))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(Fence))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(MiscFeature))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(SaleType))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+ggplot(datosTrain, aes(SaleCondition))+ geom_bar(fill = "#0073C2FF") + theme_pubclean()
+
+
+```
+
+Ahora los histogramas de las variables cuantitativas para ver si hay normalidad aun que sea en las continuas.
+```{r BloqueDeHistogramas, echo=FALSE}
+hist(x= datosTrain$MSSubClass, main=paste("Histograma de Type of dwelling involved in the sale"))
+hist(x= datosTrain$LotFrontage, main=paste("Histograma de Lot Frontage"))
+hist(x= datosTrain$LotArea, main=paste("Histograma de Lot Area"))
+hist(x= datosTrain$OverallQual, main=paste("Histograma de Overall Quality"))
+hist(x= datosTrain$OverallCond, main=paste("Histograma de Overall Condition"))
+hist(x= datosTrain$MasVnrArea, main=paste("Histograma de Masonry Veneer Type"))
+hist(x= datosTrain$BsmtFinSF1, main=paste("Histograma de Basement Type 1 Square Feet"))
+hist(x= datosTrain$BsmtFinSF2, main=paste("Histograma de Basement Type 2 Square Feet"))
+hist(x= datosTrain$BsmtUnfSF, main=paste("Histograma de Unfinished Basement Square Feer"))
+hist(x= datosTrain$TotalBsmtSF, main=paste("Histograma de Total Square Feet Basement Area"))
+hist(x= datosTrain$X1stFlrSF, main=paste("Histograma de First Floor Square Feet"))
+hist(x= datosTrain$X2ndFlrSF, main=paste("Histograma de Second Floor Square Feet"))
+hist(x= datosTrain$LowQualFinSF, main=paste("Histograma de Low QC Finished Square Feet"))
+hist(x= datosTrain$GrLivArea, main=paste("Histograma de Above Grade Living Area"))
+hist(x= datosTrain$BsmtFullBath, main=paste("Histograma de Basement Full Bathrooms"))
+hist(x= datosTrain$BsmtHalfBath, main=paste("Histograma de Basement Half Bathrooms"))
+hist(x= datosTrain$FullBath, main=paste("Histograma de Full Bathrooms Above Grade"))
+hist(x= datosTrain$HalfBath, main=paste("Histograma de Half Bathrooms Above Grade"))
+hist(x= datosTrain$BedroomAbvGr, main=paste("Histograma de Bedrooms Above Grade"))
+hist(x= datosTrain$KitchenAbvGr, main=paste("Histograma de Kitchens Above Grade"))
+hist(x= datosTrain$TotRmsAbvGrd, main=paste("Histograma de Total Rooms Above Grade"))
+hist(x= datosTrain$Fireplaces, main=paste("Histograma de No. Of Fireplaces"))
+hist(x= datosTrain$GarageCars, main=paste("Histograma de Size Of Garage in Car Capacity"))
+hist(x= datosTrain$GarageArea, main=paste("Histograma de Size Of Garage in Square Feet"))
+hist(x= datosTrain$WoodDeckSF, main=paste("Histograma de Wood Deck Area in SF"))
+hist(x= datosTrain$OpenPorchSF, main=paste("Histograma de Open Porch Area in Square Feet"))
+hist(x= datosTrain$EnclosedPorch, main=paste("Histograma de Enclosed Porch Area in Square Feet"))
+hist(x= datosTrain$X3SsnPorch, main=paste("Histograma de Three Season Porch Area in Square Feet"))
+hist(x= datosTrain$ScreenPorch, main=paste("Histograma de Screen Porch Area in Square Feet"))
+hist(x= datosTrain$PoolArea, main=paste("Histograma de Pool Area in Square Feet"))
+hist(x= datosTrain$MiscVal, main=paste("Histograma de $Value Of Miscellaneous Feature"))
+hist(x= datosTrain$MoSold, main=paste("Histograma de Month Sold"))
+hist(x= datosTrain$SalePrice, main=paste("Histograma de Sale Price"))
+
+
+```
+
+
+Matriz de correlacion de las variables cuantitativas y su determinante
+
+```{r matrices, echo=FALSE}
+library(corrplot)
+rcor<-cor(datosTrain[,c(2,4,5,18,19,27,35,37:39,44:53,55,57,62,63,67:72,76,77,81)], use = "complete.obs"  )
+# Determinante
+det(rcor)
+
+```
+
+```{r heatmapDeMatriz}
+
+library(ggcorrplot)
+library(ggplot2)
+
+ggcorrplot(rcor)
+
+```
+
+Se hara un analisis de cramer v, para ver si las relaciones de correlacion de las variables categoricas
+```{r CramersVParaCaregoricas}
+varcat <- table(datosTrain[,c(3,6)])
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
