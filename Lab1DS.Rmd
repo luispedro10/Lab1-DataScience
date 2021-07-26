@@ -3,18 +3,7 @@ title: "Lab1DS"
 output: html_document
 ---
 
-```{r}
-library(rela)
-library(psych)
-library(FactoMineR)
-library(fpc)
-library(factoextra)
-library(caret)
-library(corrplot)
 
-
-
-```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -29,7 +18,7 @@ theme_set(theme_pubr())
 # Laboratorio No.1 Data Science
 ## Analisis exploratorio del data set
 
-Nota:El analiis exploratorio se saca de un laboratorio del semestre pasado de mineria de datos, el cual se trabajo con Maria Isabel Montoya que es de otro grupo este semestre.
+Nota: el codigo solo para sacar las barras de fruecuencia se saco de un lab de mineria de datos del semestre pasado. Que se trabajo con maria isabel montoya que esta en otro grupo esta vez.
 
 
 Breve resumen del data set
@@ -140,6 +129,7 @@ Matriz de correlacion de las variables cuantitativas y su determinante
 ```{r matrices, echo=FALSE}
 library(corrplot)
 rcor<-cor(datosTrain[,c(2,4,5,18,19,27,35,37:39,44:53,55,57,62,63,67:72,76,77,81)], use = "complete.obs"  )
+rcor
 # Determinante
 det(rcor)
 
@@ -154,17 +144,39 @@ ggcorrplot(rcor)
 
 ```
 
-Se hara un analisis de cramer v, para ver si las relaciones de correlacion de las variables categoricas
-```{r CramersVParaCaregoricas}
-varcat <- table(datosTrain[,c(3,6)])
+
+```{r ParesCategoricas, echo=FALSE}
+library(rcompanion)
+table1 <- table(datosTrain$KitchenQual, datosTrain$BsmtQual)
+mosaicplot(table1, main = "Condicion de Sotano vs Condicion de Cocina", xlab = "CondCocina", ylab = "CondSotano")
+cramerV(table1)
+
+table2 <- table(datosTrain$GarageFinish, datosTrain$GarageType)
+mosaicplot(table2, main = "Finalizado del Garage vs Tipo de Garage", xlab = "FinGarage", ylab = "TipoGarage")
+cramerV(table2)
+
+
 
 ```
 
-```{r}
+```{r PCA, echo=FALSE}
+library(rela)
+library(psych)
+library(FactoMineR)
+library(fpc)
+library(factoextra)
+library(caret)
+library(corrplot)
+
+matriz<- as.matrix(datosTrain[,c(2,4,5,18,19,27,35,37:39,44:53,55,57,62,63,67:72,76,77,81)])
+pafDatos <- paf(matriz)
+
 
 ```
 
+
 ```{r}
+
 
 ```
 
