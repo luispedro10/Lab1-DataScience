@@ -128,7 +128,7 @@ Matriz de correlacion de las variables cuantitativas y su determinante
 
 ```{r matrices, echo=FALSE}
 library(corrplot)
-rcor<-cor(datosTrain[,c(2,4,5,18,19,27,35,37:39,44:53,55,57,62,63,67:72,76,77,81)], use = "complete.obs"  )
+rcor<-cor(datosTrain[,c(2,4,5,18,19,27,35,38,39,45:53,55,57,62,63,67:72,76,77,81)], use = "complete.obs"  )
 rcor
 # Determinante
 det(rcor)
@@ -159,7 +159,7 @@ cramerV(table2)
 
 ```
 
-```{r PCA, echo=FALSE}
+```{r PCA}
 library(rela)
 library(psych)
 library(FactoMineR)
@@ -168,10 +168,15 @@ library(factoextra)
 library(caret)
 library(corrplot)
 
-matriz<- as.matrix(datosTrain[,c(2,4,5,18,19,27,35,37:39,44:53,55,57,62,63,67:72,76,77,81)])
+matriz<- as.matrix(datosTrain[,c(2,4,5,18,19,27,35,38,39,45:53,55,57,62,63,67:72,76,77,81)])
 pafDatos <- paf(matriz)
+pafDatos$KMO
+pafDatos$Bartlett
 
+matriz[!is.finite(matriz)] <- 0
 
+compPrinc <- prcomp(matriz, scale = T)
+compPrinc
 ```
 
 
