@@ -180,9 +180,65 @@ compPrinc
 ```
 
 
-```{r}
+```{r Reglas Asociacion}
 
+#install.packages("arules")
 
+library(arules)
+str(datosTrain)
+head(datosTrain)
+datosTrain$Street <- as.factor(datosTrain$Street)
+datosTrain$Alley <- as.factor(datosTrain$Alley)
+datosTrain$LotShape <- as.factor(datosTrain$LotShape)
+datosTrain$LandContour <- as.factor(datosTrain$LandContour)
+datosTrain$Utilities <- as.factor(datosTrain$Utilities)
+datosTrain$LotConfig <- as.factor(datosTrain$LotConfig)
+datosTrain$LandSlope <- as.factor(datosTrain$LandSlope) #12
+datosTrain$Neighborhood <- as.factor(datosTrain$Neighborhood)
+datosTrain$Condition1 <- as.factor(datosTrain$Condition1)
+datosTrain$Condition2 <- as.factor(datosTrain$Condition2)
+datosTrain$BldgType <- as.factor(datosTrain$BldgType)
+datosTrain$HouseStyle <- as.factor(datosTrain$HouseStyle)
+datosTrain$YearBuilt <- as.factor(datosTrain$YearBuilt)#20
+datosTrain$YearRemodAdd <- as.factor(datosTrain$YearRemodAdd)
+datosTrain$RoofStyle <- as.factor(datosTrain$RoofStyle)
+datosTrain$RoofMatl <- as.factor(datosTrain$RoofMatl)
+datosTrain$Exterior1st <- as.factor(datosTrain$Exterior1st)
+datosTrain$Exterior2nd <- as.factor(datosTrain$Exterior2nd)
+datosTrain$MasVnrType <- as.factor(datosTrain$MasVnrType)
+datosTrain$ExterCond <- as.factor(datosTrain$ExterCond)
+datosTrain$ExterQual <- as.factor(datosTrain$ExterQual)
+datosTrain$Foundation <- as.factor(datosTrain$Foundation)
+datosTrain$BsmtQual <- as.factor(datosTrain$BsmtQual)
+datosTrain$BsmtCond <- as.factor(datosTrain$BsmtCond)
+datosTrain$BsmtExposure <- as.factor(datosTrain$BsmtExposure)
+datosTrain$BsmtFinType1 <- as.factor(datosTrain$BsmtFinType1)
+datosTrain$BsmtFinSF1 <- as.factor(datosTrain$BsmtFinSF1)
+datosTrain$BsmtFinType2 <- as.factor(datosTrain$BsmtFinType2)
+datosTrain$BsmtFinSF2 <- as.factor(datosTrain$BsmtFinSF2)#36
+datosTrain$Heating <- as.factor(datosTrain$Heating)#40
+datosTrain$HeatingQC <- as.factor(datosTrain$HeatingQC)
+datosTrain$CentralAir <- as.factor(datosTrain$CentralAir)
+datosTrain$Electrical <- as.factor(datosTrain$Electrical)#43
+datosTrain$KitchenQual <- as.factor(datosTrain$KitchenQual)
+datosTrain$Functional <- as.factor(datosTrain$Functional)
+datosTrain$FireplaceQu <- as.factor(datosTrain$FireplaceQu)
+datosTrain$GarageType <- as.factor(datosTrain$GarageType)
+datosTrain$GarageYrBlt <- as.factor(datosTrain$GarageYrBlt)
+datosTrain$GarageFinish <- as.factor(datosTrain$GarageFinish)
+datosTrain$GarageQual <- as.factor(datosTrain$GarageQual)
+datosTrain$GarageCond <- as.factor(datosTrain$GarageCond)
+datosTrain$PavedDrive <- as.factor(datosTrain$PavedDrive)
+datosTrain$PoolQC <- as.factor(datosTrain$PoolQC)
+datosTrain$Fence <- as.factor(datosTrain$Fence)
+datosTrain$YrSold <- as.factor(datosTrain$YrSold)
+datosTrain$SaleType <- as.factor(datosTrain$SaleType)
+datosTrain$SaleCondition <- as.factor(datosTrain$SaleCondition)
+
+#reglas <- apriori(datosTrain[, c(6,7,8,9,10,11,12,13,14,15,16,17,20,21,22,23,24,25,26,28,29,30,31,32,33,34,35,36, 40,41,42,43,54,56,58,59,60,61,64,65,66,73,74,78,79,80)], parameter = list(support = 0.2, confidence = 0.70, target = "rules"))
+
+reglas <- apriori(datosTrain[, c(54,56,58,59,60,61,64,65,66,73,74,78,79,80)], parameter = list(support = 0.8, confidence = 0.90, target = "rules"))
+inspect(reglas)
 ```
 
 
