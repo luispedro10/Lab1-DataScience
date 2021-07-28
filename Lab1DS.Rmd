@@ -124,9 +124,9 @@ hist(x= datosTrain$SalePrice, main=paste("Histograma de Sale Price"))
 ```
 
 
-Matriz de correlacion de las variables cuantitativas y su determinante
+## Matriz de correlacion de las variables cuantitativas y su determinante
 
-```{r matrices, echo=FALSE}
+```{r matrices}
 library(corrplot)
 rcor<-cor(datosTrain[,c(2,4,5,18,19,27,35,38,39,45:53,55,57,62,63,67:72,76,77,81)], use = "complete.obs"  )
 rcor
@@ -135,7 +135,9 @@ det(rcor)
 
 ```
 
+## Mapa de calor
 ```{r heatmapDeMatriz}
+
 
 library(ggcorrplot)
 library(ggplot2)
@@ -144,7 +146,7 @@ ggcorrplot(rcor)
 
 ```
 
-
+## Grafica de mosaico para analizar correlacion en variables cuantitativas
 ```{r ParesCategoricas, echo=FALSE}
 library(rcompanion)
 table1 <- table(datosTrain$KitchenQual, datosTrain$BsmtQual)
@@ -159,7 +161,8 @@ cramerV(table2)
 
 ```
 
-```{r PCA}
+## PCA
+```{r PCA }
 library(rela)
 library(psych)
 library(FactoMineR)
@@ -177,10 +180,26 @@ matriz[!is.finite(matriz)] <- 0
 
 compPrinc <- prcomp(matriz, scale = T)
 compPrinc
+summary(compPrinc)
+
+fviz_eig(compPrinc, addlabels = TRUE, ylim = c(0,60))
+
+
+fviz_contrib(compPrinc, choice = "var", axes = 1, top = 15)
+fviz_contrib(compPrinc, choice = "var", axes = 2, top = 15)
+fviz_contrib(compPrinc, choice = "var", axes = 3, top = 15)
+
+
+var<-get_pca_var(compPrinc)
+corrplot(var$cos2, is.corr = F)
+
+
+
+
 ```
 
-
-```{r Reglas Asociacion}
+## Reglas de asociacion
+```{r ReglasAsociacion}
 
 #install.packages("arules")
 
